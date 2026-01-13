@@ -278,7 +278,7 @@ const products = [
     "bestSeller": true,
     "newArrival": true,
     "badgeColor": "green",
-    "sizes": ["S", "M", "XL", "2XL", "3xl", "4xl", "5xl", "6xl"],
+    "sizes": ["S", "M", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"],
     "onSale": false,
 
     "launchDate": "2025-02-01",
@@ -289,7 +289,7 @@ const products = [
     "brand": "RARE RABBIT",
 
     "colors": [
-      { "name": "white", "hex": "#FFFFFF" },
+      { "name": "White", "hex": "#FFFFFF" },
       { "name": "Orange", "hex": "#FFA500" },
       { "name": "Purple", "hex": "#800080" },
       { "name": "Pink", "hex": "#FFC0CB" },
@@ -298,11 +298,11 @@ const products = [
 
     "stock": 80,
     "availabilityStatus": "In Stock",
-    "minimumOrderQuantity": 8,
+    "minimumOrderQuantity": 1,
 
     "tags": ["shirt", "men", "linen", "new arrival", "office wear"],
 
-    "sku": "SHI-ELE-WOM-002",
+    "sku": "SHI-ELE-MEN-002",
 
     "weight": 10,
     "dimensions": {
@@ -337,22 +337,22 @@ const products = [
       "createdAt": "2025-02-01T08:00:00.000Z",
       "updatedAt": "2025-02-01T08:00:00.000Z",
       "barcode": "8802233445566",
-      "qrCode": "https://cdn.dummyjson.com/public/qr-shirt-women-002.png"
+      "qrCode": "https://cdn.dummyjson.com/public/qr-shirt-men-002.png"
     },
 
     "images": [
-      menShirt_2_1,
-      menShirt_2_2,
-      menShirt_2_3,
-      menShirt_2_4,
-      menShirt_2_5,
-      menShirt_2_6,
-      menShirt_2_7
+      "menShirt_2_1",
+      "menShirt_2_2",
+      "menShirt_2_3",
+      "menShirt_2_4",
+      "menShirt_2_5",
+      "menShirt_2_6",
+      "menShirt_2_7"
     ],
 
-    "thumbnail": menShirt_2_1,
-    "gender": "men"
+    "thumbnail": "menShirt_2_1"
   },
+
 
   {
     "id": 3,

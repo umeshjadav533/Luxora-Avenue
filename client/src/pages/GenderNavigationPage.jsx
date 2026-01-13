@@ -9,26 +9,37 @@ const GenderNavigationPage = () => {
   const { products, assets } = useContext(StoreContext);
   const { categoryPage } = useParams();
   const [categoryProductData, setCategoryProductData] = useState([]);
-  const pageImage = assets.pageData.find(page => page.name === categoryPage);
-  
+  const pageImages = assets.pageData.find(p => p.name === categoryPage);
+
   useEffect(() => {
-    const filteredData = products.filter(product => product.category === categoryPage);
-    setCategoryProductData(filteredData);
-  }, [products, categoryPage])
+  if (products.length > 0) {
+      const filteredData =  products.filter(product => product.category === categoryPage);
+      setCategoryProductData(filteredData);
+    }
+  }, [products, categoryPage]);
+
+  console.log(pageImages);
   return (
     <div>
-      <Slider
-          data={pageImage.img}
+      {pageImages.img.length > 1 ? (
+        <Slider
+          data={pageImages.img}
           superLargeDesktop={1}
           desktop={1}
           tablet={1}
           mobile={1}
           sliderPerMove={1}
+          showDots={true}
           loop={true}
+          leftArrowClass='hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 left-2 p-2 rounded-full group flex-row-between-property gap-2 px-4'
+          rightArrowClass='hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 right-2 p-2 rounded-full group flex-row-between-property gap-2 px-4'
           renderItem={(image) => (
             <img src={image} className='w-full h-[100vh] object-cover' />
           )}
-        />
+        /> 
+      ) : (
+        <img src={pageImages.img[0]} className='w-full h-[100vh] object-cover'/>
+      )}
 
 
       {categoryProductData.length > 0 && (

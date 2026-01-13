@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BestSeller = () => {
+const GenzPage = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const BestSeller = () => {
   )
 }
 
-export default BestSeller
+export default GenzPage

@@ -51,7 +51,7 @@ const FeaturedSlide = ({ item }) => {
                 key={index}
                 src={img}
                 onClick={() => setImageIndex(index)}
-                className={`w-full h-full object-contain border rounded-md cursor-pointer ${imageIndex === index ? "border-black" : "border-gray-300"
+                className={`w-full h-full object-contain border rounded-md cursor-pointer ${imageIndex === index ? "border-2 border-slate-400" : "border-gray-300"
                   }`}/>
             ))}
           </div>

@@ -87,8 +87,9 @@ const ImageSlider = ({ images }) => {
             showDots={true}
             loop={true}
             itemClass="h-full flex items-center justify-center"
-            leftArrowClass="border hover:bg-black hover:text-white transition absolute top-1/2 -translate-y-1/2 left-2 p-2 rounded-full cursor-pointer z-50"
-            rightArrowClass="border hover:bg-black hover:text-white transition absolute top-1/2 -translate-y-1/2 right-2 p-2 rounded-full cursor-pointer z-50"
+            buttonText={false}
+            leftArrowClass='hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 left-2 p-2 rounded-full group flex-row-between-property gap-2 px-4'
+            rightArrowClass='hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 right-2 p-2 rounded-full group flex-row-between-property gap-2 px-4'
             renderItem={(image) => (
               <img src={image} alt="" className="h-[100vh]" />
             )}

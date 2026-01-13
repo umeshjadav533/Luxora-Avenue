@@ -11,6 +11,9 @@ import CartPage from './pages/CartPage'
 import WishListPage from './pages/WishListPage'
 import GenderNavigationPage from './pages/GenderNavigationPage'
 import SearchPage from './pages/SearchPage'
+import GenzPage from './pages/GenzPage'
+import ProfilePage from './pages/ProfilePage'
+import OrderPage from './pages/OrderPage'
 
 const App = () => {
   const { openImages, productImages } = useContext(StoreContext);
@@ -21,8 +24,11 @@ const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/search' element={<SearchPage />} />
         <Route path='/:categoryPage' element={<GenderNavigationPage />} />
+        <Route path='/genz' element={<GenzPage />} />
         <Route path='/studio' element={<StudioPage />} />
         <Route path='/product/:productId' element={<ProductPage />} />
+        <Route path='/orders' element={<OrderPage />} />
+        <Route path='/profile' element={<ProfilePage />} />
         <Route path='/wishlist' element={<WishListPage />} />
         <Route path='/cart' element={<CartPage />} />
       </Routes>

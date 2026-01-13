@@ -5,11 +5,11 @@ import { StoreContext } from "../Context/StoreContext";
 
 const HeroSection = () => {
   const { assets } = useContext(StoreContext);
-
   return (
     <div className='w-full m-auto mb-10'>
       <div className="w-full h-[100vh] overflow-hidden">
-        <Slider
+        {assets.offerPoster.length > 1 ? (
+          <Slider
           data={assets.offerPoster}
           superLargeDesktop={1}
           desktop={1}
@@ -17,8 +17,8 @@ const HeroSection = () => {
           mobile={1}
           sliderPerMove={1}
           showDots={true}
-          leftArrowClass='hover:bg-[#F9FAFB] transition-color duration-300 absolute top-1/2 -translate-y-1/2 left-2 p-2 rounded-full cursor-pointer'
-          rightArrowClass='hover:bg-[#F9FAFB] transition-color duration-300  absolute top-1/2 -translate-y-1/2 right-2 p-2 rounded-full cursor-pointer'
+          leftArrowClass='hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 left-2 p-2 rounded-full group flex-row-between-property gap-2 px-4'
+          rightArrowClass='hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 right-2 p-2 rounded-full group flex-row-between-property gap-2 px-4'
           loop={true}
           renderItem={(item) => (
             <a href={item.link} className="overflow-hidden">
@@ -26,6 +26,12 @@ const HeroSection = () => {
             </a>
           )}
         />
+        ) : (
+          <a href={assets.offerPoster[0].link} className="overflow-hidden">
+            <img src={assets.offerPoster[0].img} className='w-full h-[100vh] object-cover' />
+          </a>
+        )}
+        
       </div>
 
       <div className="w-full flex flex-wrap items-center justify-center gap-12 mt-10 max-md:px-2 py-5 bg-[#000]">

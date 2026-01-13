@@ -6,25 +6,24 @@ import Price from "./Price";
 const ShopByCategory = () => {
   const { products, capitalizeWord } = useContext(StoreContext);
   const [shopByCategory, setShopByCategory] = useState([]);
+
   useEffect(() => {
-    const categorySet = new Map();
-
+    const subCategoryMap = new Map();
     products.forEach((product) => {
-      const { id, title, images, discountPercentage, category } = product;
-
-      if (category && !categorySet.has(category)) {
-        categorySet.set(category, {
+      const { id, title, images, discountPercentage, subCategory } = product;
+      if(subCategory && !subCategoryMap.has(subCategory)){
+        subCategoryMap.set(subCategory, {
           id,
           title,
           image: images?.[0],
           discountPercentage,
-          category,
+          subCategory
         });
       }
     });
-    setShopByCategory(Array.from(categorySet.values()));
-  }, [products]);
-
+    setShopByCategory(Array.from(subCategoryMap.values()));
+  },[products]);
+  console.log(shopByCategory);
   return (
     <div className="w-full my-10 px-6">
       <h3 className="text-5xl roker-font text-gray-800 mb-6">SHOP BY CATEGORY</h3>
@@ -45,12 +44,12 @@ const ShopByCategory = () => {
               {/* Info - Bottom Se Chipka Hua */}
               <div className="mt-auto p-3 text-center bg-[#000]">
                 <h4 className="text-lg font-bold text-gray-800 tracking-wide text-white">
-                  {capitalizeWord(item.category)}
+                  {capitalizeWord(item.subCategory)}
                 </h4>
               </div>
 
               {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 
                 flex items-center justify-center transition">
                 <span className="border-2 text-white px-5 py-2 rounded-full text-sm font-semibold shadow hover:bg-[#000] transition duration-300">
                   Shop Now →
@@ -61,7 +60,6 @@ const ShopByCategory = () => {
         ))}
       </div>
     </div>
-
   );
 };
 

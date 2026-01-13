@@ -200,7 +200,6 @@ export const StoreContext = createContext();
 const StoreContextProvider = ({ children }) => {
   // fetch product
   const { data: products, loading, error } = useFetch("http://localhost:3000/products");
-
   const [cartProducts, setCartProducts] = useState(() => {
     const saved = localStorage.getItem('cartProducts');
     return saved ? JSON.parse(saved) : [];

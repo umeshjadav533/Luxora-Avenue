@@ -45,7 +45,7 @@ const Color = ({
       )}
 
       <div className="flex items-center gap-2 px-1 flex-wrap">
-        {printColors.map((color) => {
+        {printColors && printColors.map((color) => {
           const isWhite =
             color.hex.toLowerCase() === "#ffffff" ||
             color.hex.toLowerCase() === "white";

@@ -1,48 +1,88 @@
-import { useContext, useEffect, useState } from "react";
-import Slider from "../components/Slider";
-import { StoreContext } from "../Context/StoreContext";
-import { useParams } from "react-router-dom";
-import Rating from "../components/Rating";
-import Price from "../components/Price";
-import Color from "../components/Color";
-import {Eye, HandCoins, Minus, Plus, RefreshCcw, ShieldCheck, ShoppingBag} from "lucide-react";
-import ProductCard from "../components/ProductCard";
+// const { productId } = useParams();
+//   const {  products, capitalizeWord, setProductImages, setOpenImages, openImages, addToCart
+//   } = useContext(StoreContext);
+
+//   const [productData, setProductData] = useState(null);
+//   const [itemSize, setItemSize] = useState("");
+//   const [relatedProducts, setRelatedProducts] = useState([]);
+//   const [quantity, setQuantity] = useState(1);
+
+//   // Find Product
+//   useEffect(async() => {
+//     if(products.length > 0){
+//       const findedProduct = await products.find(p => p.id === String(productId));
+//       setProductData(findedProduct);
+
+//       // set default size
+//       if(productData?.sizes?.length > 0){
+//         setItemSize(productData.sizes[0]);
+//       }
+
+//       // Related products
+//       if(productData){
+//         const filteredRelatedProducts = products.filter(
+//           p => p.category === productData.category && p.id !== productData.id
+//         );
+//         setRelatedProducts(filteredRelatedProducts);
+//       }
+//     }
+//   },[products, productId]);
+
+//   if(!productData) return <div className="h-screen flex-col-center-property">
+//     <span className="text-5xl roker-font text-red-400">Loading...</span>
+//   </div>
+
+import React, { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
+import { StoreContext } from '../Context/StoreContext';
+import Slider from '../components/Slider';
+import Rating from '../components/Rating';
+import Price from '../components/Price';
+import Color from '../components/Color';
+import { HandCoins, Minus, Plus, RefreshCcw, ShieldCheck, ShoppingBag } from 'lucide-react';
+import ProductCard from '../components/ProductCard';
 
 const ProductPage = () => {
   const { productId } = useParams();
-  const {
-    products,
-    capitalizeWord,
-    setProductImages,
-    setOpenImages,
-    openImages,
-    addToCart,
+  const { products, capitalizeWord, setProductImages, setOpenImages, openImages, addToCart
   } = useContext(StoreContext);
-  const productData = products.find((item) => item.id === Number(productId));
-  const [itemSize, setItemSize] = useState(
-    productData.sizes && productData.sizes.length > 0 ? productData.sizes[0] : []
-  );
+
+  const [productData, setProductData] = useState(null);
+  const [itemSize, setItemSize] = useState("");
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
 
+  // Find product safely
   useEffect(() => {
-    const filteredData = products.filter(
-      (product) => product.category === productData.category
-    );
-    setRelatedProducts(filteredData);
-  }, [products]);
+    if (products.length > 0) {
+      const found = products.find(p => String(p.id) === String(productId));
+      setProductData(found);
+    }
+  }, [products, productId]);
 
-  const increaseQty = () => {
-    setQuantity(prev => prev < 20 ? prev + 1 : prev);
-  }
+  useEffect(() => {
+    // set default size
+    if (productData?.sizes?.length > 0) {
+      setItemSize(productData.sizes[0]);
+    }
+  }, [productData])
 
-  const decreaseQty = () => {
-    setQuantity(prev => prev > 1 ? prev - 1 : prev);
-  }
+  // Related products
+  useEffect(() => {
+    if (productData) {
+      const filteredRelatedProducts = products.filter(
+        p => p.category === productData.category && p.id !== productData.id
+      );
+      setRelatedProducts(filteredRelatedProducts);
+    }
+  }, [products, productData])
 
+  if (!productData) return <div className="h-screen flex-col-center-property">
+    <span className="text-5xl roker-font text-red-400">Loading...</span>
+  </div>
   return (
-    <div className="w-full mt-[80px]">
-      <div className="">
+    <div className='w-full mt-[120px] p-5'>
+      {productData.images.length > 1 ? (
         <Slider
           data={productData.images}
           superLargeDesktop={3}
@@ -52,47 +92,49 @@ const ProductPage = () => {
           sliderPerMove={1}
           showDots={true}
           loop={true}
-          leftArrowClass="border hover:bg-black hover:text-white transition-color duration-300 absolute top-1/2 -translate-y-1/2 left-2 p-2 rounded-full cursor-pointer"
-          rightArrowClass="border hover:bg-black hover:text-white transition-color duration-300  absolute top-1/2 -translate-y-1/2 right-2 p-2 rounded-full cursor-pointer"
+          buttonText={false}
+          leftArrowClass='hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 left-2 p-2 rounded-full group flex-row-between-property gap-2 px-4'
+          rightArrowClass='hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 right-2 p-2 rounded-full group flex-row-between-property gap-2 px-4'
           renderItem={(item) => (
             <div className="flex-row-center-property my-5">
               <img src={item} className="h-[350px]" />
             </div>
           )}
         />
-        <div
-          className="absolute top-30 right-10 bg-white flex-row-center-property p-1 rounded-full shadow-md hover:shadow-lg transition cursor-pointer"
-          onClick={() => {
-            setProductImages(productData.images);
-            setOpenImages(!openImages);
-          }}
-        >
-          <Eye size={40}/>
+      ) : (
+        <div className="flex-row-center-property my-5">
+          <img src={productData.images[0]} className="h-[350px]" />
         </div>
-      </div>
+      )}
 
-      <div className="bg-white w-[95%] m-auto rounded-xl grid grid-cols-4 gap-2 my-5 p-10">
-        <div className="flex flex-col gap-2 p-5">
+      <div className='w-full p-10 bg-white mx-auto my-5 rounded-xl grid grid-cols-4 gap-2'>
+        <ul className='flex flex-col gap-2 p-5'>
           {/* brand name */}
-          {productData.brand && (
-            <h3 className="text-2xl font-bold">
-              {capitalizeWord(productData.brand)}
-            </h3>
-          )}
+          <li>
+            {productData.brand && (
+              <h3 className="text-2xl font-bold">
+                {capitalizeWord(productData.brand)}
+              </h3>
+            )}
+          </li>
 
           {/* product title */}
-          {productData.title && (
-            <span className="text-xl">{capitalizeWord(productData.title)}</span>
-          )}
+          <li>
+            {productData.title && (
+              <span className="text-xl">{capitalizeWord(productData.title)}</span>
+            )}
+          </li>
 
           {/* product description  */}
-          {productData.description && (
-            <small className="text-justify">
-              {capitalizeWord(productData.description)}
-            </small>
-          )}
+          <li>
+            {productData.description && (
+              <small className="text-justify">
+                {capitalizeWord(productData.description)}
+              </small>
+            )}
+          </li>
 
-          <span className="flex-row-between-property">
+          <li className="flex-row-between-property">
             {/* product rating */}
             {productData.rating && <Rating rating={productData.rating} />}
 
@@ -103,155 +145,156 @@ const ProductPage = () => {
                   {productData.discountPercentage} % OFF
                 </span>
               )}
-          </span>
+          </li>
 
           {/* product price */}
-          <span>
+          <li>
             <Price
               originalPrice={productData.originalPrice}
               discountPercentage={productData.discountPercentage}
             />
-          </span>
-        </div>
+          </li>
+        </ul>
 
-        <div className="p-5 flex flex-col gap-3">
-          {/* product colors */}
-          {productData.colors && (
-            <>
-              <span>COLORS</span>
-              <span>
-                <Color
-                  colors={productData.colors}
-                  colorWidth={30}
-                  colorHeight={30}
-                  outlineOffset={3}
-                />
-              </span>
-            </>
-          )}
 
-          <h3 className="font-bold text-md">Quantity</h3>
-          <div className="flex gap-2">
-            <div className="bg-white border border-slate-400 flex-row-center-property gap-5 rounded-lg font-bold select-none">
-              <span
-                className="p-1 px-2 cursor-pointer h-full rounded-l-lg flex-row-center-property"
-                onClick={decreaseQty}>
-                <Minus size={15} />
-              </span>
-              <span className="p-1 text-sm w-[20px] flex-row-center-property">
-                {quantity}
-              </span>
-              <span
-                className="p-1 px-2 cursor-pointer h-full rounded-r-lg flex-row-center-property"
-                onClick={increaseQty}>
-                <Plus size={15} />
-              </span>
+        <ul className='flex flex-col gap-5 p-5'>
+          <li>
+            {/* product colors */}
+            {productData.colors && (
+              <>
+                <span>COLORS</span>
+                <span>
+                  <Color
+                    colors={productData.colors}
+                    colorWidth={30}
+                    colorHeight={30}
+                    outlineOffset={3}
+                  />
+                </span>
+              </>
+            )}
+          </li>
+
+          <li>
+            <h3 className="font-bold text-md">Quantity</h3>
+            <div className="flex gap-2">
+              <ul className="bg-white border border-slate-400 flex-row-center-property gap-5 rounded-lg font-bold select-none">
+                <li
+                  className="p-1 px-2 cursor-pointer h-full rounded-l-lg flex-row-center-property"
+                  onClick={() => setQuantity(q => (q > 1 ? q - 1 : q))}>
+                  <Minus size={15} />
+                </li>
+                <li className="p-1 text-sm w-[20px] flex-row-center-property">
+                  {quantity}
+                </li>
+                <li
+                  className="p-1 px-2 cursor-pointer h-full rounded-r-lg flex-row-center-property"
+                  onClick={() => setQuantity(q => (q < 20 ? q + 1 : q))}>
+                  <Plus size={15} />
+                </li>
+              </ul>
             </div>
-          </div>
-        </div>
+          </li>
+        </ul>
 
-        <div className="p-5 flex flex-col gap-3">
-          {/* product sizes */}
-          {productData.sizes?.length > 0 && (
-            <>
-              <span>SIZES</span>
-              <div className="grid grid-cols-4 gap-6">
-                {productData.sizes.map((size) => (
-                  <span
-                    className={`border border-gray-400 rounded-md hover:bg-black text-center py-2 hover:text-white cursor-pointer ${
-                      size === itemSize ? "bg-black text-white" : ""
-                    }`}
-                    onClick={() => setItemSize(size)}
-                  >
-                    {size}
-                  </span>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
 
-        <div className="p-5 flex-col-center-property gap-5">
-          {/* add to cart button */}
-          <button
-            className="bg-[#000] text-white font-semibold w-full rounded-full py-2  flex-row-center-property gap-2 shadow-[0_4px_10px_rgba(253,199,0,0.35)] transition cursor-pointer hover:opacity-80"
-            onClick={() => addToCart(productData.id, itemSize, quantity)}
-          >
-            <span>
-              <ShoppingBag />
-            </span>
-            <small>ADD TO BAG</small>
-          </button>
+        <ul className='flex flex-col gap-5 p-5'>
 
-          {/* buy now button */}
-          <button className="bg-[#000] text-white font-semibold w-full rounded-full py-2 shadow-[0_4px_10px_rgba(253,199,0,0.35)] transition cursor-pointer hover:opacity-80">
-            <small>BUY NOW</small>
-          </button>
-        </div>
+          <li className="flex gap-2">
+            {productData.bestSeller && (
+              <span className="relative bg-black text-white text-[10px] font-bold px-3 py-1 tracking-widest uppercase before:content-['★'] before:mr-1">
+                Best Seller
+              </span>
+            )}
+
+            {productData.newArrival && (
+              <span className="relative bg-white text-black border border-black text-[10px] font-bold px-3 py-1 tracking-widest uppercase">
+                New In
+              </span>
+            )}
+          </li>
+
+          <li className="flex flex-col gap-3">
+            {/* product sizes */}
+            {productData.sizes?.length > 0 && (
+              <>
+                <span>SIZES</span>
+                <div className="grid grid-cols-4 gap-6">
+                  {productData.sizes.map((size) => (
+                    <span
+                      className={`border border-gray-400 rounded-md hover:bg-black text-center py-2 hover:text-white cursor-pointer ${size === itemSize ? "bg-black text-white" : ""}`}
+                      onClick={() => setItemSize(size)}>
+                      {size}
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
+          </li>
+
+        </ul>
+
+
+        <ul className='flex-col-center-property gap-5 p-5'>
+          <li className='w-full flex flex-col gap-2'>
+            {/* add to cart button */}
+            <button
+              className="bg-[#000] text-white font-semibold w-full rounded-full py-2  flex-row-center-property gap-2 shadow-[0_4px_10px_rgba(253,199,0,0.35)] transition cursor-pointer hover:opacity-80"
+              onClick={() => addToCart(productData.id, itemSize, quantity)}>
+              <span>
+                <ShoppingBag />
+              </span>
+              <small>ADD TO BAG</small>
+            </button>
+
+            {/* buy now button */}
+            <button className="bg-[#000] text-white font-semibold w-full rounded-full py-2 shadow-[0_4px_10px_rgba(253,199,0,0.35)] transition cursor-pointer hover:opacity-80">
+              <small>BUY NOW</small>
+            </button>
+          </li>
+
+        </ul>
       </div>
 
-      {/* cards */}
-      <div className="w-[95%] m-auto my-5 rounded-xl bg-white flex justify-around p-5 font-bold">
-        {/* product warrenty */}
-        {productData.warrantyInformation && (
-          <div className="flex-col-center-property border-2 border-slate-400 rounded-xl px-15 py-3 bg-gray-200">
-            <ShieldCheck size={40} />
-            <span>{productData.warrantyInformation}</span>
-          </div>
-        )}
+      <ul className="w-full m-auto my-8 rounded-2xl bg-white grid grid-cols-1 md:grid-cols-3 gap-6 p-6 font-semibold">
 
-        {!productData.warrantyInformation && (
-          <div className="flex-col-center-property border-2 border-slate-400 rounded-xl px-15 py-3 bg-gray-200">
-            <ShieldCheck size={40} />
-            <span>No Warranty</span>
-          </div>
-        )}
+        {/* Warranty */}
+        <li className="group flex flex-col items-center gap-3 border border-slate-200 rounded-xl p-6 bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm hover:shadow-lg transition">
+          <ShieldCheck size={42} className="text-green-600 group-hover:scale-110 transition" />
+          <span className="text-gray-800 text-center">
+            {productData.warrantyInformation ? productData.warrantyInformation : "No Warranty"}
+          </span>
+        </li>
 
-        {/* product return policy */}
-        {productData.isReturnable && (
-          <div className="flex-col-center-property border-2 border-slate-400 rounded-xl px-15 py-3 bg-gray-200">
-            <RefreshCcw size={40} />
-            <span>{productData.returnPolicy}</span>
-          </div>
-        )}
+        {/* Return Policy */}
+        <li className="group flex flex-col items-center gap-3 border border-slate-200 rounded-xl p-6 bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm hover:shadow-lg transition">
+          <RefreshCcw size={42} className="text-blue-600 group-hover:rotate-180 transition" />
+          <span className="text-gray-800 text-center">
+            {productData.returnPolicy ? productData.returnPolicy : "Not Returnable"}
+          </span>
+        </li>
 
-        {!productData.isReturnable && (
-          <div className="flex-col-center-property border-2 border-slate-400 rounded-xl px-15 py-3 bg-gray-200">
-            <RefreshCcw size={40} />
-            <span>Not Returnable</span>
-          </div>
-        )}
+        {/* COD */}
+        <li className="group flex flex-col items-center gap-3 border border-slate-200 rounded-xl p-6 bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm hover:shadow-lg transition">
+          <HandCoins size={42} className="text-yellow-600 group-hover:scale-110 transition" />
+          <span className="text-gray-800 text-center">
+            {productData.isCODAvailable ? "Cash On Delivery" : "COD Not Available"}
+          </span>
+        </li>
 
-        {/* product cash on delivery */}
-        {productData.isCODAvailable && (
-          <div className="flex-col-center-property border-2 border-slate-400 rounded-xl px-15 py-3 bg-gray-200">
-            <HandCoins size={40} />
-            <span>Cash On Delivery</span>
-          </div>
-        )}
+      </ul>
 
-        {!productData.isCODAvailable && (
-          <div className="flex-col-center-property border-2 border-slate-400 rounded-xl px-15 py-3 bg-gray-200">
-            <HandCoins size={40} />
-            <span>COD Not Available</span>
-          </div>
-        )}
-        {/*  */}
-      </div>
 
-      <div className="w-[95%] m-auto my-5">
-        <h3 className="roker-font my-5">EXPLORE</h3>
+      <div className="w-full m-auto mt-10 mb-0">
+        <h3 className="roker-font my-5 text-4xl">EXPLORE</h3>
         <div className="grid grid-cols-5 gap-2">
           {relatedProducts.map((item) => (
             <ProductCard productItemData={item} key={item.id} />
           ))}
         </div>
       </div>
-
-      <div className="w-[95%] m-auto my-5 rounded-xl"></div>
     </div>
-  );
-};
+  )
+}
 
-export default ProductPage;
-// { data, renderItem, superLargeDesktop = 5, desktop = 4, tablet = 2, mobile = 1, sliderPerMove = 3, showDots=false, outSideDots=false, loop=false, leftArrowClass, rightArrowClass, itemClass='' }
+export default ProductPage

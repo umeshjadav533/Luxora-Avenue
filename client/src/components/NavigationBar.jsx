@@ -1,4 +1,4 @@
-import { Heart, Search, ShoppingBag, User } from "lucide-react";
+import { CircleUserRound, Heart, Search, ShoppingBag } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { StoreContext } from "../Context/StoreContext";
@@ -11,7 +11,7 @@ const NavigationBar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate(`/search?q=${query}`);
+    navigate(`/search?query=${query}`);
   }
 
   useEffect(() => {
@@ -69,23 +69,20 @@ const NavigationBar = () => {
         </li>
 
         <li>
-          <Link to="/profile" className="flex-col-center-property">
-            <User />
-            <small>Profile</small>
+          <Link to="/profile">
+            <CircleUserRound />
           </Link>
         </li>
 
         <li>
-          <Link to="/wishlist" className="flex-col-center-property">
+          <Link to="/wishlist">
             <Heart />
-            <small>Wishlist</small>
           </Link>
         </li>
 
         <li>
-          <Link to="/cart" className="flex-col-center-property relative">
+          <Link to="/cart" className="relative">
             <ShoppingBag />
-            <small>Bag</small>
 
             {totalCartProduct() > 0 && (
               <span className="absolute -top-2 -right-1 bg-black text-white text-xs px-1.5 py-[2px] rounded-full">

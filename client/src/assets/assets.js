@@ -255,7 +255,27 @@ export const navigationBarLink = [
   },
 ];
 
+const wishListPageOfferImages = [
+  {
+    image: "https://res.cloudinary.com/dosbhrvcz/image/upload/v1768197847/featured_1_1_v0t6mb.jpg",
+    link: "https://res.cloudinary.com/dosbhrvcz/image/upload/v1768197847/featured_1_1_v0t6mb.jpg"
+  },
+  {
+    image: "https://res.cloudinary.com/dosbhrvcz/image/upload/v1768197847/featured_2_1_ygb282.jpg",
+    link: "https://res.cloudinary.com/dosbhrvcz/image/upload/v1768197847/featured_2_1_ygb282.jpg"
+  }
+]
 
+const cartPageOfferImages = [
+  {
+    image: "https://res.cloudinary.com/dosbhrvcz/image/upload/v1768197847/featured_1_1_v0t6mb.jpg",
+    link: "https://res.cloudinary.com/dosbhrvcz/image/upload/v1768197847/featured_1_1_v0t6mb.jpg"
+  },
+  {
+    image: "https://res.cloudinary.com/dosbhrvcz/image/upload/v1768197847/featured_2_1_ygb282.jpg",
+    link: "https://res.cloudinary.com/dosbhrvcz/image/upload/v1768197847/featured_2_1_ygb282.jpg"
+  }
+]
 
 const assets = {
   hot_deal,
@@ -271,7 +291,9 @@ const assets = {
   footerData,
   advertisement_poster,
   pageData,
-  navigationBarLink
+  navigationBarLink,
+  wishListPageOfferImages,
+  cartPageOfferImages
 };
 
 export default assets;

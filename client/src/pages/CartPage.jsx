@@ -9,7 +9,8 @@ const CartPage = () => {
     currency,
     products,
     cartProducts,
-    deliveryFee
+    deliveryFee,
+    assets
   } = useContext(StoreContext);
 
   const productDetail = cartProducts.map((cartItem) => {
@@ -32,7 +33,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className='mt-[100px] flex justify-between p-6 gap-6'>
+    <div className={`${cartProducts.length > 0 ? ' mt-[100px]' : 'mt-0' } flex justify-between p-6 gap-6`}>
       {/* LEFT: CART ITEMS */}
       {cartProducts.length > 0 && (
         <div className="w-[70%] flex flex-col gap-5">
@@ -85,10 +86,9 @@ const CartPage = () => {
 
 
       {cartProducts.length === 0 && (
-        <div className="w-full grid grid-cols-4 gap-5 h-[calc(100vh-140px)]">
-          <div className="col-span-1 border overflow-hidden"></div>
-          <div className="col-span-3 border flex-row-center-property overflow-hidden">
-            <NothingHere title1="YOUR CART IS EMPTY" title2="START SHOPPING!"/>
+        <div className="w-full">
+          <div className="flex-row-center-property overflow-hidden h-screen">
+            <NothingHere title1="YOUR CART IS EMPTY" title2="START SHOPPING!" rootUrl="http://localhost:5173/" />
           </div>
         </div>
       )}

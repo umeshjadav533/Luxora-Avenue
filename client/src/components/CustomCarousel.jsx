@@ -15,7 +15,9 @@ const CustomCarousel = ({ data, renderItem, interval = 3000, title }) => {
   return (
     <div className="w-full h-full h-screen">
       <div className="flex justify-between items-center px-5">
-        <b className="text-5xl font-bold roker-font ">{title}</b>
+        {title && (
+          <b className="text-5xl font-bold roker-font ">{title}</b>
+        )}
         <div className="flex items-center gap-2">
           {/* prev button */}
           <button

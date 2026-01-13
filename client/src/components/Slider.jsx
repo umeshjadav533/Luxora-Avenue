@@ -2,7 +2,7 @@ import Carousel from 'react-multi-carousel'
 import "react-multi-carousel/lib/styles.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const Slider = ({ data, renderItem, superLargeDesktop = 5, desktop = 4, tablet = 2, mobile = 1, sliderPerMove = 1, showDots=false, outSideDots=false, loop=false, leftArrowClass, rightArrowClass, itemClass='' }) => {
+const Slider = ({ data, renderItem, superLargeDesktop = 5, desktop = 4, tablet = 2, mobile = 1, sliderPerMove = 1, showDots=false, outSideDots=false, loop=false, leftArrowClass, rightArrowClass, itemClass='', buttonText=true }) => {
   
   const responsive = {
     superLargeDesktop: {
@@ -24,19 +24,16 @@ const Slider = ({ data, renderItem, superLargeDesktop = 5, desktop = 4, tablet =
   };
 
   const LeftArrow = ({ onClick }) => (
-    <button
-      onClick={onClick}
-      className={leftArrowClass}>
-      <ChevronLeft size={30} />
+    <button onClick={onClick} className={leftArrowClass}>
+      <ChevronLeft size={25} className='group-hover:text-white'/>
+      {buttonText && (<span className='group-hover:text-white'>PREV</span>)}
     </button>
   );
 
   const RightArrow = ({ onClick }) => (
-    <button
-      onClick={onClick}
-      className={rightArrowClass}
-      aria-label="Next">
-      <ChevronRight size={30} />
+    <button onClick={onClick} className={rightArrowClass} aria-label="Next">
+        {buttonText && (<span className='group-hover:text-white'>NEXT</span>)}
+        <ChevronRight size={25} className='group-hover:text-white'/>
     </button>
   );
 
@@ -50,8 +47,7 @@ const Slider = ({ data, renderItem, superLargeDesktop = 5, desktop = 4, tablet =
       slidesToSlide={sliderPerMove}
       customLeftArrow={<LeftArrow />}
       customRightArrow={<RightArrow />}
-      itemClass={itemClass}
-      >
+      itemClass={itemClass}>
       {data.map((item) => {
           return (
             renderItem(item)
