@@ -38,7 +38,7 @@ const CartPage = () => {
       {cartProducts.length > 0 && (
         <div className="w-[70%] flex flex-col gap-5">
           {productDetail.map((product) => (
-            <CartProduct product={product} />
+            <CartProduct product={product} key={product.id} />
           ))}
         </div>
       )}
