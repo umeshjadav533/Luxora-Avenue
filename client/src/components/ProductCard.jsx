@@ -7,14 +7,14 @@ import { StoreContext } from "../Context/StoreContext";
 import Price from "./Price";
 
 const ProductCard = ({ productItemData }) => {
-  const { addToCart, capitalizeWord, openImages, setOpenImages, setProductImages, calculatePrice, currency
+  const { addToCart, capitalizeWord, openImages, setOpenImages, setProductImages
   } = useContext(StoreContext);
 
   return (
-    <div className="h-[460px] bg-white border border-[#e6e1d8] rounded-2xl hover:shadow-[0_14px_32px_rgba(0,0,0,0.14)] hover:-translate-y-1 transition-all duration-300 group">
+    <div className="h-[500px] bg-white border border-[#e6e1d8] rounded-2xl hover:shadow-[0_14px_32px_rgba(0,0,0,0.14)] hover:-translate-y-1 transition-all duration-300 group">
 
       {/* Image Section */}
-      <ul className="h-[260px] relative overflow-hidden flex items-center justify-center bg-white rounded-t-2xl border-b-3 border-[#ECE9E2]">
+      <ul className="h-[250px] relative overflow-hidden flex items-center justify-center bg-white rounded-t-2xl border-b-3 border-[#ECE9E2]">
         <li className="w-full h-full flex-row-center-property bg-[#ffffff]">
           <Link to={`/product/${productItemData.id}`}>
             <img
@@ -44,7 +44,7 @@ const ProductCard = ({ productItemData }) => {
       </ul>
 
       {/* Info Section */}
-      <ul className="h-[200px] p-4 flex flex-col justify-between">
+      <ul className="h-[250px] p-4 flex flex-col justify-between">
         <li className="font-semibold text-[15px] truncate">
           {capitalizeWord(productItemData.title)}
         </li>
@@ -70,6 +70,9 @@ const ProductCard = ({ productItemData }) => {
 
         <li className="flex justify-between">
           <Rating rating={productItemData.rating} />
+        </li>
+
+        <li>
           <Price originalPrice={productItemData.originalPrice} discountPercentage={productItemData.discountPercentage} />
         </li>
 

@@ -1,23 +1,16 @@
 import { useSearchParams } from "react-router-dom";
-import { useContext, useMemo, useReducer, useState } from "react";
+import { useContext, useEffect, useMemo, useReducer, useState } from "react";
 import { StoreContext } from "../Context/StoreContext";
 import ProductCard from "../components/ProductCard";
 import { Star } from "lucide-react";
 
 // -------------------- COMPONENT --------------------
 function SearchPage() {
-  const {
-    products,
-    currency,
-    brandSearch,
-    setBrandSearch,
-    filters,
-    dispatch,
-    filteredBrandList,
-  } = useContext(StoreContext);
+  const { products, currency, brandSearch, setBrandSearch, filters, dispatch } = useContext(StoreContext);
   const [params] = useSearchParams();
   const query = params.get("query")?.toLowerCase() || "";
   const [page, setPage] = useState(1);
+  const [productBrandList, setProductBrandList] = useState([]);
   const itemsPerPage = 10;
   // Search + Filter (useMemo)
   const searchedProducts = useMemo(() => {
@@ -29,60 +22,69 @@ function SearchPage() {
     );
   }, [products, query]);
 
-  console.log(filters);
+  useEffect(() => {
+    const brands = searchedProducts.map(p => p.brand.toUpperCase());
 
-const finalFilteredProducts = useMemo(() => {
-  return searchedProducts.filter((product) => {
+    const uniqueBrands = [...new Set(brands)];
 
-    // GENDER
-    if (filters.gender.length &&
+    setProductBrandList(uniqueBrands);
+  },[searchedProducts]);
+
+  const finalFilteredProducts = useMemo(() => {
+    return searchedProducts.filter((product) => {
+
+      // GENDER
+      if (filters.gender.length &&
         !filters.gender.includes(product.gender.toUpperCase())) {
-      return false;
-    }
-
-    // BRAND
-    if (filters.brands.length &&
-        !filters.brands.includes(product.brand.toUpperCase())) {
-      return false;
-    }
-
-    // PRICE (salePrice use karo)
-    if (
-      filters.price.length &&
-      (product.salePrice < filters.price[0] ||
-       product.salePrice > filters.price[1])
-    ) {
-      return false;
-    }
-
-    // DISCOUNT (discountPercentage use karo)
-    if (
-      filters.discount.length &&
-      !filters.discount.some(d => product.discountPercentage >= d)
-    ) {
-      return false;
-    }
-
-    // RATING
-    if (
-      filters.rating.length &&
-      !filters.rating.some(r => product.rating >= r)
-    ) {
-      return false;
-    }
-
-    // TAGS (lowercase match)
-    if(filters.tags.length){
-      const tagMatch = filters.tags.some((t) => {
-        if (t === "BEST SELLER") return product.bestSeller === true;
-        if (t === "NEW ARRIVAL") return product.newArrival === true;
         return false;
-      });
-      if (!tagMatch) return false;
-    }
-    return true;
-  });
-}, [searchedProducts, filters]);
+      }
+
+      // BRAND
+      if (filters.brands.length &&
+        !filters.brands.includes(product.brand.toUpperCase())) {
+        return false;
+      }
+
+      // PRICE (salePrice use karo)
+      if (
+        filters.price.length &&
+        (product.salePrice < filters.price[0] ||
+          product.salePrice > filters.price[1])
+      ) {
+        return false;
+      }
+
+      // DISCOUNT (discountPercentage use karo)
+      if (
+        filters.discount.length &&
+        !filters.discount.some(d => product.discountPercentage >= d)
+      ) {
+        return false;
+      }
+
+      // RATING
+      if (
+        filters.rating.length &&
+        !filters.rating.some(r => product.rating >= r)
+      ) {
+        return false;
+      }
+
+      // TAGS
+      if (filters.tags.length) {
+        const tagMatch = filters.tags.some((t) => {
+          if (t === "BEST SELLER") return product.bestSeller;
+          if (t === "NEW ARRIVAL") return product.newArrival;
+          return false;
+        });
+
+        if (!tagMatch) return false;
+      }
+
+      return true;
+    });
+  }, [searchedProducts, filters]);
+
 
 
   const totalPages = Math.ceil(finalFilteredProducts.length / itemsPerPage);
@@ -92,17 +94,17 @@ const finalFilteredProducts = useMemo(() => {
     page * itemsPerPage
   );
 
-  console.log(finalFilteredProducts);
+  console.log(filters);
   return (
     <>
       <div className="mt-[80px] grid grid-cols-4 gap-5 p-5">
         {/* FILTERS */}
-        <ul className="col-span-1 bg-white p-5">
+        <ul className="col-span-1 bg-white p-5 select-none">
           {/* GENDER */}
           <li className="border-b p-4">
             <h3 className="font-bold">GENDER</h3>
-            {["MEN", "WOMEN", "KIDS"].map((g) => (
-              <label key={g} className="flex gap-2 mt-2">
+            {["MEN", "WOMEN"].map((g) => (
+              <label key={g} className="flex gap-2 mt-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={filters.gender.includes(g)}
@@ -124,8 +126,8 @@ const finalFilteredProducts = useMemo(() => {
               value={brandSearch}
               onChange={(e) => setBrandSearch(e.target.value)}
             />
-            {filteredBrandList.slice(0, 8).map((b) => (
-              <label key={b} className="flex gap-2">
+            {productBrandList.slice(0, 8).map((b) => (
+              <label key={b} className="flex gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={filters.brands.includes(b)}
@@ -164,7 +166,7 @@ const finalFilteredProducts = useMemo(() => {
             {[...Array(9)].map((_, i) => {
               const d = (i + 1) * 10;
               return (
-                <label key={d} className="flex gap-2">
+                <label key={d} className="flex gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={filters.discount.includes(d)}
@@ -182,7 +184,7 @@ const finalFilteredProducts = useMemo(() => {
           <li className="border-b p-4">
             <h3 className="font-bold">RATING</h3>
             {[2, 3, 4, 5].map((rate) => (
-              <label key={rate} className="flex gap-2 items-center">
+              <label key={rate} className="flex gap-2 items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={filters.rating.includes(rate)}
@@ -206,7 +208,7 @@ const finalFilteredProducts = useMemo(() => {
           <li className="p-4">
             <h3 className="font-bold">TAGS</h3>
             {["BEST SELLER", "NEW ARRIVAL"].map((tag) => (
-              <label key={tag} className="flex gap-2">
+              <label key={tag} className="flex gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={filters.tags.includes(tag)}
@@ -225,6 +227,12 @@ const finalFilteredProducts = useMemo(() => {
           {displayedProducts.map((product) => (
             <ProductCard key={product.id} productItemData={product} />
           ))}
+
+          {displayedProducts.length < 1 && (
+            <div>
+              noting Found...
+            </div>
+          )}
         </div>
       </div>
 
