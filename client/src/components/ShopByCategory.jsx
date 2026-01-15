@@ -23,7 +23,6 @@ const ShopByCategory = () => {
     });
     setShopByCategory(Array.from(subCategoryMap.values()));
   },[products]);
-  console.log(shopByCategory);
   return (
     <div className="w-full my-10 px-6">
       <h3 className="text-5xl roker-font text-gray-800 mb-6">SHOP BY CATEGORY</h3>

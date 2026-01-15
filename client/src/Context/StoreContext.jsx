@@ -23,7 +23,7 @@
 //       originalPrice - (originalPrice * discountPercentage) / 100
 //     )
 //   }
-  
+
 //   const addToCart = (...args) => {
 //     let productId, productSize, productQuantity;
 
@@ -184,12 +184,7 @@
 
 // export default StoreContextProvider;
 
-
-
-
-
-
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 import assets from "../assets/assets";
 import useToggle from "../hooks/useToggle";
 import { useNavigate } from "react-router-dom";
@@ -199,14 +194,18 @@ export const StoreContext = createContext();
 
 const StoreContextProvider = ({ children }) => {
   // fetch product
-  const { data: products, loading, error } = useFetch("http://localhost:3000/products");
+  const {
+    data: products,
+    loading,
+    error,
+  } = useFetch("http://localhost:3000/products");
   const [cartProducts, setCartProducts] = useState(() => {
-    const saved = localStorage.getItem('cartProducts');
+    const saved = localStorage.getItem("cartProducts");
     return saved ? JSON.parse(saved) : [];
   });
 
   const [wishListProduct, setWishListProduct] = useState(() => {
-    const saved = localStorage.getItem('wishlistProducts');
+    const saved = localStorage.getItem("wishlistProducts");
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -216,9 +215,9 @@ const StoreContextProvider = ({ children }) => {
   const calculatePrice = (originalPrice, discountPercentage) => {
     return Math.trunc(
       originalPrice - (originalPrice * discountPercentage) / 100
-    )
-  }
-  
+    );
+  };
+
   // -------------------
   // Cart Functions
   // -------------------
@@ -278,14 +277,13 @@ const StoreContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
-  },[cartProducts]);
+    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+  }, [cartProducts]);
 
   // helper to calculate total quantity
   const totalCartProduct = () => {
     return cartProducts.reduce((acc, item) => acc + item.quantity, 0);
   };
-
 
   // -------------------
   // Wishlist Functions
@@ -301,8 +299,8 @@ const StoreContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    localStorage.setItem('wishlistProducts', JSON.stringify(wishListProduct));
-  },[wishListProduct]);
+    localStorage.setItem("wishlistProducts", JSON.stringify(wishListProduct));
+  }, [wishListProduct]);
 
   // captalize method
   const capitalizeWord = (str) => {
@@ -340,17 +338,104 @@ const StoreContextProvider = ({ children }) => {
 
   const deleteSize = (id, productSize) => {
     const updateCart = cartProducts.map((item) => {
-      if(item.id !== id) return item;
-      const filteredSizes = item.sizes.filter(size => size !== productSize);
+      if (item.id !== id) return item;
+      const filteredSizes = item.sizes.filter((size) => size !== productSize);
       return { ...item, sizes: filteredSizes };
     });
     setCartProducts(updateCart);
-  }
+  };
 
   const deleteWishListProduct = (id) => {
     setWishListProduct(wishListProduct.filter((productId) => productId !== id));
-  }
+  };
 
+  // -------------------- REDUCER --------------------
+  const [brandSearch, setBrandSearch] = useState("");
+  const brands = [
+    "Nike",
+    "Adidas",
+    "Puma",
+    "Reebok",
+    "Levi's",
+    "Zara",
+    "H&M",
+    "Rare Rabbit",
+    "Allen Solly",
+    "Peter England",
+    "U.S. Polo Assn.",
+    "Roadster",
+    "HRX",
+    "Calvin Klein",
+    "Tommy Hilfiger",
+    "Louis Philippe",
+    "Van Heusen",
+    "Wrangler",
+    "Pepe Jeans",
+    "Flying Machine",
+  ];
+
+  const initialFilterState = {
+    gender: [],
+    brands: [],
+    price: [5, 50000],
+    discount: [],
+    rating: [],
+    tags: [],
+  };
+  // filter function
+  function filterReducer(state, action) {
+    switch (action.type) {
+      case "TOGGLE_GENDER":
+        return {
+          ...state,
+          gender: state.gender.includes(action.payload)
+            ? state.gender.filter((g) => g !== action.payload)
+            : [...state.gender, action.payload],
+        };
+
+      case "TOGGLE_BRAND":
+        return {
+          ...state,
+          brands: state.brands.includes(action.payload)
+            ? state.brands.filter((b) => b !== action.payload)
+            : [...state.brands, action.payload],
+        };
+
+      case "SET_PRICE":
+        return { ...state, price: [state.price[0], action.payload] };
+
+      case "TOGGLE_DISCOUNT":
+        return {
+          ...state,
+          discount: state.discount.includes(action.payload)
+            ? state.discount.filter((d) => d !== action.payload)
+            : [...state.discount, action.payload],
+        };
+
+      case "TOGGLE_RATING":
+        return {
+          ...state,
+          rating: state.rating.includes(action.payload)
+            ? state.rating.filter((r) => r !== action.payload)
+            : [...state.rating, action.payload],
+        };
+
+      case "TOGGLE_TAG":
+        return {
+          ...state,
+          tags: state.tags.includes(action.payload)
+            ? state.tags.filter((t) => t !== action.payload)
+            : [...state.tags, action.payload],
+        };
+
+      default:
+        return state;
+    }
+  }
+  const [filters, dispatch] = useReducer(filterReducer, initialFilterState);
+  const filteredBrandList = brands.filter((b) =>
+    b.toLowerCase().includes(brandSearch.toLowerCase())
+  );
   const currency = "$";
   const navigate = useNavigate();
   const deliveryFee = 5;
@@ -375,10 +460,16 @@ const StoreContextProvider = ({ children }) => {
     decreaseQty,
     deleteCartProduct,
     deliveryFee,
-    wishListProduct, setWishListProduct,
+    wishListProduct,
+    setWishListProduct,
     deleteWishListProduct,
     calculatePrice,
     deleteSize,
+    brandSearch,
+    setBrandSearch,
+    filterReducer,
+    filters, dispatch,
+    filteredBrandList
   };
 
   return (
