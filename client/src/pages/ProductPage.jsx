@@ -32,19 +32,32 @@
 //     <span className="text-5xl roker-font text-red-400">Loading...</span>
 //   </div>
 
-import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import { StoreContext } from '../Context/StoreContext';
-import Slider from '../components/Slider';
-import Rating from '../components/Rating';
-import Price from '../components/Price';
-import Color from '../components/Color';
-import { HandCoins, Minus, Plus, RefreshCcw, ShieldCheck, ShoppingBag } from 'lucide-react';
-import ProductCard from '../components/ProductCard';
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { StoreContext } from "../Context/StoreContext";
+import Slider from "../components/Slider";
+import Rating from "../components/Rating";
+import Price from "../components/Price";
+import Color from "../components/Color";
+import {
+  HandCoins,
+  Minus,
+  Plus,
+  RefreshCcw,
+  ShieldCheck,
+  ShoppingBag,
+} from "lucide-react";
+import ProductCard from "../components/ProductCard";
 
 const ProductPage = () => {
   const { productId } = useParams();
-  const { products, capitalizeWord, setProductImages, setOpenImages, openImages, addToCart
+  const {
+    products,
+    capitalizeWord,
+    setProductImages,
+    setOpenImages,
+    openImages,
+    cart_dispatch,
   } = useContext(StoreContext);
 
   const [productData, setProductData] = useState(null);
@@ -55,7 +68,7 @@ const ProductPage = () => {
   // Find product safely
   useEffect(() => {
     if (products.length > 0) {
-      const found = products.find(p => String(p.id) === String(productId));
+      const found = products.find((p) => String(p.id) === String(productId));
       setProductData(found);
     }
   }, [products, productId]);
@@ -65,23 +78,26 @@ const ProductPage = () => {
     if (productData?.sizes?.length > 0) {
       setItemSize(productData.sizes[0]);
     }
-  }, [productData])
+  }, [productData]);
 
   // Related products
   useEffect(() => {
     if (productData) {
       const filteredRelatedProducts = products.filter(
-        p => p.category === productData.category && p.id !== productData.id
+        (p) => p.category === productData.category && p.id !== productData.id
       );
       setRelatedProducts(filteredRelatedProducts);
     }
-  }, [products, productData])
+  }, [products, productData]);
 
-  if (!productData) return <div className="h-screen flex-col-center-property">
-    <span className="text-5xl roker-font text-red-400">Loading...</span>
-  </div>
+  if (!productData)
+    return (
+      <div className="h-screen flex-col-center-property">
+        <span className="text-5xl roker-font text-red-400">Loading...</span>
+      </div>
+    );
   return (
-    <div className='w-full mt-[120px] p-5'>
+    <div className="w-full mt-[120px] p-5">
       {productData.images.length > 1 ? (
         <Slider
           data={productData.images}
@@ -93,8 +109,8 @@ const ProductPage = () => {
           showDots={true}
           loop={true}
           buttonText={false}
-          leftArrowClass='hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 left-2 p-2 rounded-full group flex-row-between-property gap-2 px-4'
-          rightArrowClass='hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 right-2 p-2 rounded-full group flex-row-between-property gap-2 px-4'
+          leftArrowClass="hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 left-2 p-2 rounded-full group flex-row-between-property gap-2 px-4"
+          rightArrowClass="hover:bg-[#000] border-2 transition-color duration-300 absolute top-1/2 -translate-y-1/2 right-2 p-2 rounded-full group flex-row-between-property gap-2 px-4"
           renderItem={(item) => (
             <div className="flex-row-center-property my-5">
               <img src={item} className="h-[350px]" />
@@ -107,8 +123,8 @@ const ProductPage = () => {
         </div>
       )}
 
-      <div className='w-full p-10 bg-white mx-auto my-5 rounded-xl grid grid-cols-4 gap-2'>
-        <ul className='flex flex-col gap-2 p-5'>
+      <div className="w-full p-10 bg-white mx-auto my-5 rounded-xl grid grid-cols-4 gap-2">
+        <ul className="flex flex-col gap-2 p-5">
           {/* brand name */}
           <li>
             {productData.brand && (
@@ -121,7 +137,9 @@ const ProductPage = () => {
           {/* product title */}
           <li>
             {productData.title && (
-              <span className="text-xl">{capitalizeWord(productData.title)}</span>
+              <span className="text-xl">
+                {capitalizeWord(productData.title)}
+              </span>
             )}
           </li>
 
@@ -156,8 +174,7 @@ const ProductPage = () => {
           </li>
         </ul>
 
-
-        <ul className='flex flex-col gap-5 p-5'>
+        <ul className="flex flex-col gap-5 p-5">
           <li>
             {/* product colors */}
             {productData.colors && (
@@ -181,7 +198,8 @@ const ProductPage = () => {
               <ul className="bg-white border border-slate-400 flex-row-center-property gap-5 rounded-lg font-bold select-none">
                 <li
                   className="p-1 px-2 cursor-pointer h-full rounded-l-lg flex-row-center-property"
-                  onClick={() => setQuantity(q => (q > 1 ? q - 1 : q))}>
+                  onClick={() => setQuantity((q) => (q > 1 ? q - 1 : q))}
+                >
                   <Minus size={15} />
                 </li>
                 <li className="p-1 text-sm w-[20px] flex-row-center-property">
@@ -189,7 +207,8 @@ const ProductPage = () => {
                 </li>
                 <li
                   className="p-1 px-2 cursor-pointer h-full rounded-r-lg flex-row-center-property"
-                  onClick={() => setQuantity(q => (q < 20 ? q + 1 : q))}>
+                  onClick={() => setQuantity((q) => (q < 20 ? q + 1 : q))}
+                >
                   <Plus size={15} />
                 </li>
               </ul>
@@ -197,9 +216,7 @@ const ProductPage = () => {
           </li>
         </ul>
 
-
-        <ul className='flex flex-col gap-5 p-5'>
-
+        <ul className="flex flex-col gap-5 p-5">
           <li className="flex gap-2">
             {productData.bestSeller && (
               <span className="relative bg-black text-white text-[10px] font-bold px-3 py-1 tracking-widest uppercase before:content-['★'] before:mr-1">
@@ -222,8 +239,11 @@ const ProductPage = () => {
                 <div className="grid grid-cols-4 gap-6">
                   {productData.sizes.map((size) => (
                     <span
-                      className={`border border-gray-400 rounded-md hover:bg-black text-center py-2 hover:text-white cursor-pointer ${size === itemSize ? "bg-black text-white" : ""}`}
-                      onClick={() => setItemSize(size)}>
+                      className={`border border-gray-400 rounded-md hover:bg-black text-center py-2 hover:text-white cursor-pointer ${
+                        size === itemSize ? "bg-black text-white" : ""
+                      }`}
+                      onClick={() => setItemSize(size)}
+                    >
                       {size}
                     </span>
                   ))}
@@ -231,16 +251,20 @@ const ProductPage = () => {
               </>
             )}
           </li>
-
         </ul>
 
-
-        <ul className='flex-col-center-property gap-5 p-5'>
-          <li className='w-full flex flex-col gap-2'>
+        <ul className="flex-col-center-property gap-5 p-5">
+          <li className="w-full flex flex-col gap-2">
             {/* add to cart button */}
             <button
-              className="bg-[#000] text-white font-semibold w-full rounded-full py-2  flex-row-center-property gap-2 shadow-[0_4px_10px_rgba(253,199,0,0.35)] transition cursor-pointer hover:opacity-80"
-              onClick={() => addToCart(productData.id, itemSize, quantity)}>
+              className="bg-[#000] text-white font-semibold w-full rounded-full py-2 flex-row-center-property gap-2 shadow-[0_4px_10px_rgba(253,199,0,0.35)] transition cursor-pointer hover:opacity-80"
+              onClick={() => {
+                cart_dispatch({
+                  type: "ADD_TO_CART",
+                  payload: { id: productData.id, size: itemSize, quantity }
+                });
+              }}
+            >
               <span>
                 <ShoppingBag />
               </span>
@@ -252,38 +276,49 @@ const ProductPage = () => {
               <small>BUY NOW</small>
             </button>
           </li>
-
         </ul>
       </div>
 
       <ul className="w-full m-auto my-8 rounded-2xl bg-white grid grid-cols-1 md:grid-cols-3 gap-6 p-6 font-semibold">
-
         {/* Warranty */}
         <li className="group flex flex-col items-center gap-3 border border-slate-200 rounded-xl p-6 bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm hover:shadow-lg transition">
-          <ShieldCheck size={42} className="text-green-600 group-hover:scale-110 transition" />
+          <ShieldCheck
+            size={42}
+            className="text-green-600 group-hover:scale-110 transition"
+          />
           <span className="text-gray-800 text-center">
-            {productData.warrantyInformation ? productData.warrantyInformation : "No Warranty"}
+            {productData.warrantyInformation
+              ? productData.warrantyInformation
+              : "No Warranty"}
           </span>
         </li>
 
         {/* Return Policy */}
         <li className="group flex flex-col items-center gap-3 border border-slate-200 rounded-xl p-6 bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm hover:shadow-lg transition">
-          <RefreshCcw size={42} className="text-blue-600 group-hover:rotate-180 transition" />
+          <RefreshCcw
+            size={42}
+            className="text-blue-600 group-hover:rotate-180 transition"
+          />
           <span className="text-gray-800 text-center">
-            {productData.returnPolicy ? productData.returnPolicy : "Not Returnable"}
+            {productData.returnPolicy
+              ? productData.returnPolicy
+              : "Not Returnable"}
           </span>
         </li>
 
         {/* COD */}
         <li className="group flex flex-col items-center gap-3 border border-slate-200 rounded-xl p-6 bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm hover:shadow-lg transition">
-          <HandCoins size={42} className="text-yellow-600 group-hover:scale-110 transition" />
+          <HandCoins
+            size={42}
+            className="text-yellow-600 group-hover:scale-110 transition"
+          />
           <span className="text-gray-800 text-center">
-            {productData.isCODAvailable ? "Cash On Delivery" : "COD Not Available"}
+            {productData.isCODAvailable
+              ? "Cash On Delivery"
+              : "COD Not Available"}
           </span>
         </li>
-
       </ul>
-
 
       <div className="w-full m-auto mt-10 mb-0">
         <h3 className="roker-font my-5 text-4xl">EXPLORE</h3>
@@ -294,7 +329,7 @@ const ProductPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductPage
+export default ProductPage;

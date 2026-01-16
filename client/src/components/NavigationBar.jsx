@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { StoreContext } from "../Context/StoreContext";
 
 const NavigationBar = () => {
-  const { totalCartProduct, assets, navigate } = useContext(StoreContext);
+  const {totalCartProduct,  assets, navigate } = useContext(StoreContext);
   const [show, setShow] = useState(true);
   const [lastScroll, setLastScroll] = useState(0);
   const [query, setQuery] = useState('');

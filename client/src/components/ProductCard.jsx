@@ -7,7 +7,7 @@ import { StoreContext } from "../Context/StoreContext";
 import Price from "./Price";
 
 const ProductCard = ({ productItemData }) => {
-  const { addToCart, capitalizeWord, openImages, setOpenImages, setProductImages
+  const { cart_dispatch, capitalizeWord, openImages, setOpenImages, setProductImages
   } = useContext(StoreContext);
 
   return (
@@ -79,10 +79,28 @@ const ProductCard = ({ productItemData }) => {
         {/* CTA */}
         <button
           className="bg-black text-white text-sm font-semibold w-full rounded-lg py-2 flex items-center justify-center gap-2 shadow-md hover:brightness-110 transition cursor-pointer"
-          onClick={() => productItemData.sizes?.length
-            ? addToCart(productItemData.id, productItemData.sizes[0], 1)
-            : addToCart(productItemData.id, 1)
-          }>
+          onClick={()=>{
+            if(productItemData.sizes?.length){
+              cart_dispatch({
+                type: "ADD_TO_CART",
+                payload: {
+                  id: productItemData.id,
+                  size: productItemData.sizes[0],
+                  quantity: 1
+                }
+              });
+            } else {
+              cart_dispatch({
+                type: "ADD_TO_CART",
+                payload: {
+                  id: productItemData.id,
+                  size: null,
+                  quantity: 1
+                }
+              });
+            }
+          }}
+          >
           <ShoppingBag size={16} />
           ADD TO BAG
         </button>
@@ -93,4 +111,3 @@ const ProductCard = ({ productItemData }) => {
 };
 
 export default ProductCard;
-

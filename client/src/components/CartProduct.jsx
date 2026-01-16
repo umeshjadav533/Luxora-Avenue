@@ -1,26 +1,14 @@
+import { Eye, Minus, Plus, X } from "lucide-react";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Eye, Minus, Plus, X } from "lucide-react";
 import { StoreContext } from "../Context/StoreContext";
 import Price from "./Price";
 
 const CartProduct = ({ product }) => {
-  const {
-    setProductImages,
-    setOpenImages,
-    openImages,
-    deleteCartProduct,
-    capitalizeWord,
-    decreaseQty,
-    increaseQty,
-    deleteSize,
-  } = useContext(StoreContext);
+  const { cart_dispatch, capitalizeWord } = useContext(StoreContext);
 
   return (
-    <div
-      key={product.id}
-      className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition flex overflow-hidden"
-    >
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition flex overflow-hidden">
       {/* IMAGE */}
       <div className="w-[180px] relative bg-[#f7f7f7] flex items-center justify-center">
         {product.images && (
@@ -53,7 +41,12 @@ const CartProduct = ({ product }) => {
       <div className="flex-1 p-4 relative">
         <button
           className="absolute top-3 right-3 text-gray-400 hover:text-black cursor-pointer"
-          onClick={() => deleteCartProduct(product.id)}
+          onClick={() => {
+            cart_dispatch({
+              type: "DELETE_CART_PRODUCT",
+              payload: { id: product.id, size: product.size }, // size-specific delete
+            });
+          }}
         >
           <X size={18} />
         </button>
@@ -71,18 +64,12 @@ const CartProduct = ({ product }) => {
         )}
 
         {/* SIZE */}
-        {product.sizes?.length > 0 && (
+        {product.size && (
           <div className="flex items-center gap-2 mt-2">
             <span className="text-xs text-gray-400">Size:</span>
-            {product.sizes.map((size) => {
-              return (
-                <span
-                  key={size}
-                  className="bg-black text-white px-2 py-0.5 text-sm rounded-md">
-                  {size}
-                </span>
-              );
-            })}
+            <span className="bg-black text-white px-2 py-0.5 text-sm rounded-md">
+              {product.size}
+            </span>
           </div>
         )}
 
@@ -103,14 +90,24 @@ const CartProduct = ({ product }) => {
           <div className="flex items-center border rounded-full overflow-hidden">
             <button
               className="px-3 py-1 hover:bg-gray-100"
-              onClick={() => decreaseQty(product.id)}
+              onClick={() => {
+                cart_dispatch({
+                  type: "DECREASE_QUNTITY",
+                  payload: { id: product.id, size: product.size }, // pass product + size
+                });
+              }}
             >
               <Minus size={14} />
             </button>
             <span className="px-3 text-sm font-medium">{product.quantity}</span>
             <button
               className="px-3 py-1 hover:bg-gray-100"
-              onClick={() => increaseQty(product.id)}
+              onClick={() => {
+                cart_dispatch({
+                  type: "INCREASE_QUNTITY", // reducer case name
+                  payload: { id: product.id, size: product.size }, // pass product + size
+                });
+              }}
             >
               <Plus size={14} />
             </button>
