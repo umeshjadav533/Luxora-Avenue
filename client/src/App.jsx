@@ -11,9 +11,9 @@ import CartPage from './pages/CartPage'
 import WishListPage from './pages/WishListPage'
 import GenderNavigationPage from './pages/GenderNavigationPage'
 import SearchPage from './pages/SearchPage'
-import GenzPage from './pages/GenzPage'
 import ProfilePage from './pages/ProfilePage'
 import OrderPage from './pages/OrderPage'
+import Account_settingPage from './pages/Account_settingPage'
 
 const App = () => {
   const { openImages, productImages } = useContext(StoreContext);
@@ -24,11 +24,11 @@ const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/search' element={<SearchPage />} />
         <Route path='/:categoryPage' element={<GenderNavigationPage />} />
-        <Route path='/genz' element={<GenzPage />} />
         <Route path='/studio' element={<StudioPage />} />
         <Route path='/product/:productId' element={<ProductPage />} />
         <Route path='/orders' element={<OrderPage />} />
         <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/account-setting' element={<Account_settingPage />} />
         <Route path='/wishlist' element={<WishListPage />} />
         <Route path='/cart' element={<CartPage />} />
       </Routes>

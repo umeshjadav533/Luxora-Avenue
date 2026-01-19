@@ -7,12 +7,19 @@ import useFetch from "../hooks/useFetch";
 export const StoreContext = createContext();
 
 const StoreContextProvider = ({ children }) => {
-  // fetch product
-  const {
-    data: products,
-    loading,
-    error,
+  // Fetch products data
+  const { 
+    data: products, 
+    loading: productsLoading, 
+    error: productsError 
   } = useFetch("http://localhost:3000/products");
+
+  // Fetch user orders data
+  const { 
+    data: userOrders, 
+    loading: ordersLoading, 
+    error: ordersError 
+  } = useFetch("http://localhost:3000/userOrders");
 
   const [openImages, setOpenImages] = useToggle();
   const [productImages, setProductImages] = useState([]);
@@ -66,7 +73,9 @@ const StoreContextProvider = ({ children }) => {
         return {
           ...state,
           cartProducts: state.cartProducts.map((item) =>
-            item.id === action.payload && item.quantity < 20
+            item.id === action.payload.id &&
+            item.size === action.payload.size &&
+            item.quantity < 20
               ? { ...item, quantity: item.quantity + 1 }
               : item
           ),
@@ -76,7 +85,9 @@ const StoreContextProvider = ({ children }) => {
         return {
           ...state,
           cartProducts: state.cartProducts.map((item) =>
-            item.id === action.payload && item.quantity > 1
+            item.id === action.payload.id &&
+            item.size === action.payload.size &&
+            item.quantity > 1
               ? { ...item, quantity: item.quantity - 1 }
               : item
           ),
@@ -210,10 +221,24 @@ const StoreContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const deliveryFee = 5;
 
+  const calculatePrice = (originalPrice, discountPercentage) => {
+    const discountAmount = (originalPrice * discountPercentage) / 100;
+    const finalPrice = originalPrice - discountAmount;
+    return Math.round(finalPrice); // round off
+  };
+
+
   const value = {
+    // products 
     products,
-    loading,
-    error,
+    productsLoading,
+    productsError,
+
+    // user orders
+    userOrders,
+    ordersLoading,
+    ordersError,
+    
     assets,
     currency,
     navigate,
@@ -240,6 +265,7 @@ const StoreContextProvider = ({ children }) => {
     dispatch,
 
     deliveryFee,
+    calculatePrice
   };
 
   return (

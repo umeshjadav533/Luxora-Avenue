@@ -246,10 +246,6 @@ export const navigationBarLink = [
     link: "/beauty",
   },
   {
-    name: "GENZ",
-    link: "/genz",
-  },
-  {
     name: "STUDIO",
     link: "/studio",
   },

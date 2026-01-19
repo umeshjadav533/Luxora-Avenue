@@ -41,9 +41,12 @@ const GenderNavigationPage = () => {
         <img src={pageImages.img[0]} className='w-full h-[100vh] object-cover'/>
       )}
 
+      
 
       {categoryProductData.length > 0 && (
+        
         <div className='grid grid-cols-5 gap-2 my-5 mx-5'>
+          <h3 className='roker-font text-2xl col-span-5 underline underline-offset-7'>EXPLORE MORE</h3>
           {categoryProductData.slice(0,10).map((item) => (
             <ProductCard productItemData={item} key={item.id} />
           ))}
@@ -55,7 +58,7 @@ const GenderNavigationPage = () => {
       {categoryProductData.length > 0 && (
         <div className='grid grid-cols-5 gap-2 my-5 mx-5'>
           {categoryProductData.slice(10).map((item) => (
-          <ProductCard productItemData={item} key={item.id} />
+            <ProductCard productItemData={item} key={item.id} />
           ))}
         </div>
       )}

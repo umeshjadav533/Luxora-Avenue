@@ -11,15 +11,15 @@ const ProductCard = ({ productItemData }) => {
   } = useContext(StoreContext);
 
   return (
-    <div className="h-[500px] bg-white border border-[#e6e1d8] rounded-2xl hover:shadow-[0_14px_32px_rgba(0,0,0,0.14)] hover:-translate-y-1 transition-all duration-300 group">
+    <div className="h-[400px] bg-white border border-[#e6e1d8] rounded-xl  group p-3 flex flex-col gap-2">
 
       {/* Image Section */}
-      <ul className="h-[250px] relative overflow-hidden flex items-center justify-center bg-white rounded-t-2xl border-b-3 border-[#ECE9E2]">
-        <li className="w-full h-full flex-row-center-property bg-[#ffffff]">
+      <ul className="h-[220px] relative overflow-hidden flex items-center justify-center bg-white overflow-hidden">
+        <li className="w-full h-full flex-row-center-property bg-[#F9FAFB] rounded-lg">
           <Link to={`/product/${productItemData.id}`}>
             <img
               src={productItemData.images[0]}
-              className="h-[240px] object-contain transition-transform duration-300 group-hover:scale-110" />
+              className="h-[200px] object-contain transition-transform duration-300 group-hover:scale-110 rounded-lg" />
           </Link>
         </li>
 
@@ -35,6 +35,10 @@ const ProductCard = ({ productItemData }) => {
           </div>
         </li>
 
+        <li className="absolute bottom-1 left-2">
+          <Rating rating={productItemData.rating} />
+        </li>
+
         {/* Discount Badge */}
         {productItemData.discountPercentage > 0 && (
           <li className="absolute top-5 left-0 bg-black text-white px-3 py-1 text-xs rounded-r-lg tracking-wide">
@@ -43,8 +47,8 @@ const ProductCard = ({ productItemData }) => {
         )}
       </ul>
 
-      {/* Info Section */}
-      <ul className="h-[250px] p-4 flex flex-col justify-between">
+      {/* -----------------------------Info Section--------------------------- */}
+      <ul className="h-[180px] flex flex-col justify-between">
         <li className="font-semibold text-[15px] truncate">
           {capitalizeWord(productItemData.title)}
         </li>
@@ -68,17 +72,15 @@ const ProductCard = ({ productItemData }) => {
           {capitalizeWord(productItemData.description)}
         </li>
 
-        <li className="flex justify-between">
-          <Rating rating={productItemData.rating} />
-        </li>
-
+        {/* price */}
         <li>
           <Price originalPrice={productItemData.originalPrice} discountPercentage={productItemData.discountPercentage} />
         </li>
 
-        {/* CTA */}
-        <button
-          className="bg-black text-white text-sm font-semibold w-full rounded-lg py-2 flex items-center justify-center gap-2 shadow-md hover:brightness-110 transition cursor-pointer"
+        {/* add to cart button */}
+        <li>
+          <button
+          className="bg-black text-white text-xs font-semibold w-full rounded-lg py-2 flex items-center justify-center gap-2 shadow-md hover:brightness-110 transition cursor-pointer"
           onClick={()=>{
             if(productItemData.sizes?.length){
               cart_dispatch({
@@ -104,6 +106,7 @@ const ProductCard = ({ productItemData }) => {
           <ShoppingBag size={16} />
           ADD TO BAG
         </button>
+        </li>
       </ul>
     </div>
 

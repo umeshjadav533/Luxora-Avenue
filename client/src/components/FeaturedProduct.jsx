@@ -27,7 +27,7 @@ const FeaturedSlide = ({ item }) => {
   const [imageIndex, setImageIndex] = useState(0);
 
   return (
-    <div className="w-full h-[500px] flex bg-[#F9FAFB] overflow-hidden my-5">
+    <div className="w-full h-[500px] flex bg-[#ffffff] overflow-hidden my-5">
       {/* Main Image */}
       <div className="w-1/2 h-full flex items-center justify-center">
         {item.images.length > 0 && (

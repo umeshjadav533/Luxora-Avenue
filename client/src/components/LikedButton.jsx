@@ -6,7 +6,11 @@ const LikedButton = ({id, likedButtonSize = 25}) => {
   const { wishListProduct, toggleWisList } = useContext(StoreContext);
   const isLiked = wishListProduct.includes(id);
   return (
-    <button onClick={()=>toggleWisList(id)} className='hover:scale-110 transition cursor-pointer'>
+    <button onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleWisList(id);
+    }} className='hover:scale-110 transition cursor-pointer'>
       <Heart size={likedButtonSize} fill={isLiked ? 'black' : 'none'}/>
     </button>
   )

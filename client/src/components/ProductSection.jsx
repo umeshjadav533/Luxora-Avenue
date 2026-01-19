@@ -16,7 +16,7 @@ const ProductSection = ({ title, filterFn }) => {
 
   return (
     <div className="w-full my-10 flex flex-col justify-between px-3">
-      <h1 className="text-5xl font-bold roker-font text-center my-5">
+      <h1 className="text-5xl font-extrabold roker-font text-center mb-5 text-green-400 underline decoration-black underline-offset-15">
         {title}
       </h1>
 
@@ -27,9 +27,10 @@ const ProductSection = ({ title, filterFn }) => {
         tablet={4}
         mobile={3}
         sliderPerMove={3}
-        itemClass="px-2 py-2"
-        leftArrowClass="w-[40px] h-[120px] absolute top-1/2 -translate-y-1/2 left-2 flex-row-center-property bg-black text-white rounded-r-lg cursor-pointer"
-        rightArrowClass="w-[40px] h-[120px] absolute top-1/2 -translate-y-1/2 right-2 flex-row-center-property bg-black text-white rounded-l-lg cursor-pointer"
+        buttonText={false}
+        itemClass="px-1 py-2"
+        leftArrowClass="bg-black absolute top-1/2 -translate-y-1/2 left-3 text-white p-2 rounded-lg"
+        rightArrowClass="bg-black absolute top-1/2 -translate-y-1/2 right-3 text-white p-2 rounded-lg"
         renderItem={(item) => (
           <ProductCard key={item.id} productItemData={item} />
         )}

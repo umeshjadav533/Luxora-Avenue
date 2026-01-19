@@ -50,7 +50,7 @@ const Slider = ({ data, renderItem, superLargeDesktop = 5, desktop = 4, tablet =
       itemClass={itemClass}>
       {data.map((item) => {
           return (
-            renderItem(item)
+              renderItem(item)
           );
         })}
     </Carousel>

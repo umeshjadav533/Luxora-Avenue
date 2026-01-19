@@ -18,31 +18,29 @@ const WishListProduct = ({ product }) => {
   return (
     <div
       key={product.id}
-      className="bg-white rounded-xl grid grid-cols-4 gap-4 p-4 h-[220px] shadow-sm hover:shadow-md transition"
-    >
+      className="bg-white rounded-xl grid grid-cols-4 gap-4 p-4 h-[220px] transition">
       {/* IMAGE */}
-      <div className="col-span-1 relative bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+      <div className="col-span-1 relative rounded-lg flex items-center justify-center overflow-hidden">
         <Link
           to={`/product/${product.id}`}
-          className="h-full w-full flex items-center justify-center"
-        >
+          className="h-full w-full flex items-center justify-center">
           <img src={product.images[0]} alt="" className="h-full object-contain" />
         </Link>
 
         {product.discountPercentage > 0 && (
-          <span className="absolute top-2 left-2 px-2 py-1 text-xs bg-black text-white rounded">
+          <span className="absolute top-3 left-0 px-2 py-1 text-xs bg-black text-white rounded-r-full">
             {product.discountPercentage}% OFF
           </span>
         )}
 
         <span
-          className="absolute top-2 right-2 cursor-pointer bg-white p-1 rounded-full shadow"
+          className="absolute top-3 right-2 cursor-pointer"
           onClick={() => {
             setProductImages(product.images);
             setOpenImages(!openImages);
           }}
         >
-          <Eye size={18} />
+          <Eye size={25} />
         </span>
       </div>
 

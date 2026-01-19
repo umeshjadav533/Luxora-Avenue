@@ -54,9 +54,6 @@ const ProductPage = () => {
   const {
     products,
     capitalizeWord,
-    setProductImages,
-    setOpenImages,
-    openImages,
     cart_dispatch,
   } = useContext(StoreContext);
 

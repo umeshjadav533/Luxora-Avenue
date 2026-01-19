@@ -8,9 +8,9 @@ const CartProduct = ({ product }) => {
   const { cart_dispatch, capitalizeWord } = useContext(StoreContext);
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition flex overflow-hidden">
+    <div className="bg-white rounded-xl border border-gray-200 transition flex overflow-hidden">
       {/* IMAGE */}
-      <div className="w-[180px] relative bg-[#f7f7f7] flex items-center justify-center">
+      <div className="w-[180px] relative flex items-center justify-center">
         {product.images && (
           <Link to={`/product/${product.id}`}>
             <img
@@ -27,13 +27,12 @@ const CartProduct = ({ product }) => {
         )}
 
         <span
-          className="absolute top-2 right-2 cursor-pointer bg-white p-1 rounded-full shadow"
+          className="absolute top-2 right-2 cursor-pointer rounded-full"
           onClick={() => {
             setProductImages(product.images);
             setOpenImages(!openImages);
-          }}
-        >
-          <Eye size={16} />
+          }}>
+          <Eye size={25} />
         </span>
       </div>
 
@@ -92,8 +91,8 @@ const CartProduct = ({ product }) => {
               className="px-3 py-1 hover:bg-gray-100"
               onClick={() => {
                 cart_dispatch({
-                  type: "DECREASE_QUNTITY",
-                  payload: { id: product.id, size: product.size }, // pass product + size
+                  type: "DECREASE_QUANTITY",
+                  payload: { id: product.id, size: product.size },
                 });
               }}
             >
@@ -104,8 +103,8 @@ const CartProduct = ({ product }) => {
               className="px-3 py-1 hover:bg-gray-100"
               onClick={() => {
                 cart_dispatch({
-                  type: "INCREASE_QUNTITY", // reducer case name
-                  payload: { id: product.id, size: product.size }, // pass product + size
+                  type: "INCREASE_QUANTITY",
+                  payload: { id: product.id, size: product.size },
                 });
               }}
             >
